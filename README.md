@@ -15,13 +15,14 @@ How TO Run ?
 
 1. npm install
 2. npm start
-
+3. 
 also include env file having the data of format
-1.MONGO_URI=
-2.PORT = 5000
-3.JWT_KEY = "saiakshay"
-4.EMAILPASS = "vnit@2024"
-5.NODE_STATUS = "undevelopment"
+
+1. MONGO_URI=
+2. PORT = 5000
+3. JWT_KEY = "saiakshay"
+4. EMAILPASS = "vnit@2024"
+5. NODE_STATUS = "undevelopment"
 
 -------------------------------------------------------------------------------------------------------------------
 

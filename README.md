@@ -1,6 +1,7 @@
 HOSTEL EVENT MANAGEMENT SYSTEM :
--> This Project Will Inform All the students regarding the events happening in the college with dates time and location and provide a calender to them based on the events 
--> Also The Project Have A voting System Where Every User can vote their answer whether they are intrested in the event or not by which event organisers can understand how much arrangements they need to do.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. This Project Will Inform All the students regarding the events happening in the college with dates time and location and provide a calender to them based on the events 
+2. Also The Project Have A voting System Where Every User can vote their answer whether they are intrested in the event or not by which event organisers can understand how much arrangements they need to do.
 
 
 How TO Run ?

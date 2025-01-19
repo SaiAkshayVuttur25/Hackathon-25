@@ -1,3 +1,10 @@
+HOSTEL EVENT MANAGEMENT SYSTEM :
+-> This Project Will Inform All the students regarding the events happening in the college with dates time and location and provide a calender to them based on the events 
+-> Also The Project Have A voting System Where Every User can vote their answer whether they are intrested in the event or not by which event organisers can understand how much arrangements they need to do.
+
+
+How TO Run ?
+--------------------------------------------------------------------------------------------------------------------
 #frontend
 
 1. npm install
@@ -9,8 +16,12 @@
 2. npm start
 
 also include env file having the data of format
-MONGO_URI=
-PORT = 5000
-JWT_KEY = "saiakshay"
-EMAILPASS = "vnit@2024"
-NODE_STATUS = "undevelopment"
+1.MONGO_URI=
+2.PORT = 5000
+3.JWT_KEY = "saiakshay"
+4.EMAILPASS = "vnit@2024"
+5.NODE_STATUS = "undevelopment"
+
+-------------------------------------------------------------------------------------------------------------------
+
+

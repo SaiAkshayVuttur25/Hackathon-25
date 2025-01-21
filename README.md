@@ -26,4 +26,10 @@ also include env file having the data of format
 
 -------------------------------------------------------------------------------------------------------------------
 
+1. Use email : saiakshayvuttur25@gmail.com
+2. Use password : 123456 to login as an admin where You can approve others requests and check how their frontend looks
+
+1. Use SignUp or Temporary Mail : sai@gmail.com
+2.  Use password : 123456
+
 

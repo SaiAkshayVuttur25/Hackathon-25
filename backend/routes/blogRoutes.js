@@ -14,4 +14,6 @@ router.post("/postblog", authenticateLogin, blogController.postblog);
 
 router.post("/updateBlog",authenticateLogin,blogController.updateBlog);
 
+router.patch('/events/:eventId/vote',authenticateLogin,blogController.updateVote);
+
 module.exports = router;

@@ -1,9 +1,12 @@
-const mongoose = require("mongoose");
-let resSchema = mongoose.Schema({
-    Title: String,
-    Solutions: String,
-});
+// const mongoose = require("mongoose");
 
-const resource = mongoose.model("Resource", resSchema);
+// const eventSchema = new mongoose.Schema({
+//     title: { type: String, required: true },
+//     start: { type: String, required: true },
+//     end: { type: String, required: true },
+// });
 
-module.exports = resource;
+// const Event = mongoose.model('Event', eventSchema);
+
+
+// module.exports = Event;

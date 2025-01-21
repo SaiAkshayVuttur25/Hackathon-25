@@ -25,7 +25,10 @@ let blogSchema = mongoose.Schema({
   location: String,  
   userId: String,    
   token: String,     
-  message: String,   
+  message: String,
+  participants:Number,
+  Notparticipants:Number,
+
 });
 
 const Blog = mongoose.model("blog", blogSchema);

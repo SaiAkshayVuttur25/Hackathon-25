@@ -6,7 +6,8 @@ dotenv.config();
 const secret = process.env.JWT_KEY;
 
 function authenticateLogin(req, res, next) {
-  let token = req.query.token;
+  let token = req.body.token;
+  console.log(req.body,token,secret);
   jwt.verify(token, secret, (err, data) => {
     if (err) {
       res.send({ message: "LOGIN FIRST" });

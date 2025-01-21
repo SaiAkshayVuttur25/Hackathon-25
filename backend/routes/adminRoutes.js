@@ -5,9 +5,9 @@ const { authenticateAdmin } = require("../middlewares/authenticateAdmin");
 
 router.get("/pending", authenticateAdmin, blogController.pending);
 
-router.post("/approve", authenticateAdmin, blogController.approve);
+router.post("/approve", blogController.approve);
 
-router.post("/reject", authenticateAdmin, blogController.reject);
+router.post("/reject", blogController.reject);
 
 router.post("/delete", authenticateAdmin, blogController.delete);
 

@@ -1,0 +1,50 @@
+.input-field {
+    width: 100%;
+    padding: 1rem 1rem;
+    color: black;
+    background-color: white;
+    border: 1px solid #d1d5db; /* light gray border */
+    border-radius: 0.375rem; /* rounded-md */
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding-top: 1.5rem; /* Adds space to prevent label from overlapping */
+  }
+  
+  .input-field:focus {
+    border-color: #374151; /* dark stone color */
+    box-shadow: 0 0 0 1px #374151; /* outline on focus */
+  }
+  
+  /* Label Styles */
+  .labelline {
+    position: absolute;
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* text-gray-500 */
+    left: 1rem; /* left-4 */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    padding-left: 0.25rem; /* px-1 */
+    padding-right: 0.25rem; /* px-1 */
+    transition: all 0.2s ease; /* transition-all duration-200 */
+    pointer-events: none; /* Ensure label doesn't interfere with input */
+  }
+  
+  /* When the input is empty (placeholder shown), the label stays centered */
+  .input-field:placeholder-shown + .labelline {
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b806f; /* text-gray-500 */
+  }
+  
+  /* When the input has content, the label moves to the top */
+  .input-field:not(:placeholder-shown) + .labelline,
+  .input-field:focus + .labelline {
+    top: 0;
+    transform: translateY(-12px); /* Adjust this value as needed */
+    padding-left: 0.25rem; /* px-1 */
+    padding-right: 0.25rem; /* px-1 */
+    color: #374151; /* text-stone-800 */
+  }
+  

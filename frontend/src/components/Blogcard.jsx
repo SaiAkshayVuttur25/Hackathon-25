@@ -417,14 +417,13 @@ import axios from "axios";
 import { Badge } from "@chakra-ui/react";
 
 const Blogcard = (props) => {
-  // console.log("Blogcard",props);
+  //console.log("Blogcard",props);
   
 
   const width = window.innerWidth;
   const address = "/showblog/" + props.data._id;
   const [submit, setSubmit] = useState(false);
   const [usermessage, setUserMessage] = useState("");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const newBadge = (() => {
@@ -496,8 +495,8 @@ const Blogcard = (props) => {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="transition-all ease-in-out hover:scale-105 delay-150 w-11/12 md:w-3/4 rounded-lg p-6 bg-black text-white shadow-lg hover:shadow-xl">
-        <h5 className="text-3xl font-extrabold mb-2 text-white">
+      <div className="transition-all ease-in-out hover:scale-105 delay-150 w-11/12 md:w-3/4 rounded-lg p-6 bg-[#457b9d] text-white shadow-lg hover:shadow-xl mb-3">
+        <h5 className="text-3xl font-extrabold mb-2 text-slate-950">
           {props.data.title}
           {newBadge && (
             <Badge className="ml-2" colorScheme="green">
@@ -506,7 +505,7 @@ const Blogcard = (props) => {
           )}
         </h5>
 
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-[#023047] mb-4">
           By {props.data.userId} on {props.data.eventDate} at {props.data.eventTime}
         </p>
 
@@ -528,6 +527,14 @@ const Blogcard = (props) => {
               Read More
             </Button>
           </Link>
+           {(props.isAdmin && props.data.isApproved)?<Button
+                colorScheme="red"
+                variant="solid"
+                isLoading={submit}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>:<></>} 
           {!props.data.isApproved && (
             <>
               <Button

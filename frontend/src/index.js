@@ -4,6 +4,7 @@ import { createRoot } from "react-dom";
 import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
 import App from "./App";
 import "./style.css";
+import { EventProvider } from "./pages/EventsComponent";
 
 // Extend the Chakra theme to set the default to dark mode
 const theme = extendTheme({
@@ -17,8 +18,10 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <ChakraProvider theme={theme}>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <App />
-  </ChakraProvider>
+  <EventProvider>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+    </ChakraProvider>
+  </EventProvider>
 );

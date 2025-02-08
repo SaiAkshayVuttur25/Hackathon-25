@@ -7,6 +7,7 @@ import { Spinner, useToast } from "@chakra-ui/react";
 import Blogcard from "../components/Blogcard";
 
 function Dashboard(props) {
+  //console.log("DashBoard",props);
   const [message, setMessage] = useState(-1);
   const navigate = useNavigate();
   const [data, setData] = useState([]); // Ensure data is always an array
@@ -75,6 +76,7 @@ function Dashboard(props) {
                   setData={setData}
                   setMessage={setMessage}
                   token={props.token}
+                  isAdmin={props.user.isAdmin}
                 />
               </div>
             );

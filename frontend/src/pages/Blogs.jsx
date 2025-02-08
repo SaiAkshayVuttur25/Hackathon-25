@@ -68,6 +68,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 
 function Blogs(props) {
+  //console.log("Blogs",props)
   const [data, setData] = useState([]);
   const [callCount, setCallCount] = useState(0);
 
@@ -84,6 +85,7 @@ function Blogs(props) {
           message: blog.message || "No message",
           date: blog.eventDate,  // Assuming eventDate as date
           time: blog.eventTime,  // Assuming eventTime as time
+          
         }));
 
         setData(formattedData.reverse()); // Reverse data if needed
@@ -97,7 +99,7 @@ function Blogs(props) {
   }, []);
 
   return (
-    <div className="blog-bg bg-black min-h-screen">
+    <div className=" bg-[#f1faee] min-h-screen">
       <Navbar {...props} />
       <h1 className="w-3/4 mx-auto rounded-lg p-3 text-center text-2xl mt-5 mb-5 bg-gray-800 shadow-lg text-white">
         VG BHIDE EVENTS
@@ -121,7 +123,7 @@ function Blogs(props) {
           {data.map((blog, index) => {
             return (
               <div key={index} className="m-1">
-                <Blogcard data={blog} token={props.token} setData={setData} setMessage={props.setMessage || (() => {})} />
+                <Blogcard data={blog} token={props.token} setData={setData} setMessage={props.setMessage || (() => {})} isAdmin={props.user.isAdmin}/>
               </div>
             );
           })}

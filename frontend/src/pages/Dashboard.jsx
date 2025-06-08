@@ -47,9 +47,9 @@ function Dashboard(props) {
   }, [data]);
 
   return (
-    <div className="blog-bg">
+    <div className="">
       <Navbar {...props} />
-      <h1 className="text-center text-2xl bg-slate-200 mt-3 w-3/4 m-auto rounded p-4 ">
+      <h1 className="text-center text-2xl bg-slate-200 mt-3 w-3/4 m-auto rounded p-4 text-red-600 ">
         Pending Approvals{" "}
       </h1>
       { !data ? (

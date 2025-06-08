@@ -24,14 +24,14 @@
 //   }, []);
 
 //   return (
-//     <div className="blog-bg bg-black min-h-screen">
+//     <div className="min-h-screen bg-black blog-bg">
 //       <Navbar {...props} />
-//       <h1 className="w-3/4 mx-auto rounded-lg p-3 text-center text-2xl mt-5 mb-5 bg-gray-800 shadow-lg text-white">
+//       <h1 className="w-3/4 p-3 mx-auto mt-5 mb-5 text-2xl text-center text-white bg-gray-800 rounded-lg shadow-lg">
 //         VG BHIDE EVENTS
 //       </h1>
 //       {data === null ? (
 //           <div className="text-center">
-//             <h1 className="text-center text-xl mt-32 mb-32">
+//             <h1 className="mt-32 mb-32 text-xl text-center">
 //             <Spinner className="m-4" size="xl" />
 //             <br />
 //             <span className="">This may take time, Please Wait...</span>
@@ -39,12 +39,12 @@
 //         </div>
 //       ) : data.length === 0 ? (
 //         <div className="text-center">
-//           <h1 className="text-center text-xl mt-32 mb-32">
+//           <h1 className="mt-32 mb-32 text-xl text-center">
 //             <span className="">NO RECORDS FOUND</span>
 //           </h1>
 //         </div>
 //       ) : (
-//         <div className=" md:p-5 d-block  flex-column justify-content-center  flex-wrap ">
+//         <div className="flex-wrap md:p-5 d-block flex-column justify-content-center">
 //           {data.map((blog, index) => {
 //             return (
 //               <div key={index} className="m-1">
@@ -72,27 +72,41 @@ function Blogs(props) {
   const [data, setData] = useState([]);
   const [callCount, setCallCount] = useState(0);
 
+  // useEffect(() => {
+  //   if (callCount === 0) {
+  //     axios.get("http://localhost:5000/blog/blogs").then((res) => {
+  //       console.log(res.data);
+  //       console.log(res)
+  //       // Assuming the response data structure has the same fields as provided in the document
+  //       const formattedData = res.data.map(blog => ({
+  //         ...blog,
+  //         // Ensuring the required fields from the response match
+  //         isApproved: blog.isApproved || false,
+  //         userId: blog.userId || "Unknown", 
+  //         token: blog.token || "0000", 
+  //         message: blog.message || "No message",
+  //         date: blog.eventDate,  // Assuming eventDate as date
+  //         time: blog.eventTime,  // Assuming eventTime as time
+          
+  //       }));
+
+  //       setData(formattedData.reverse()); // Reverse data if needed
+  //       setCallCount(1);
+  //     });
+  //   }
+  // }, [callCount]);
   useEffect(() => {
     if (callCount === 0) {
       axios.get("http://localhost:5000/blog/blogs").then((res) => {
-        // Assuming the response data structure has the same fields as provided in the document
-        const formattedData = res.data.data.map(blog => ({
-          ...blog,
-          // Ensuring the required fields from the response match
-          isApproved: blog.isApproved || false,
-          userId: blog.userId || "Unknown", 
-          token: blog.token || "0000", 
-          message: blog.message || "No message",
-          date: blog.eventDate,  // Assuming eventDate as date
-          time: blog.eventTime,  // Assuming eventTime as time
-          
-        }));
-
-        setData(formattedData.reverse()); // Reverse data if needed
+        setData(() => {
+          let temp = res.data.data;
+          temp.reverse();
+          return temp;
+        });
         setCallCount(1);
       });
     }
-  }, [callCount]);
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -101,12 +115,12 @@ function Blogs(props) {
   return (
     <div className=" bg-[#f1faee] min-h-screen">
       <Navbar {...props} />
-      <h1 className="w-3/4 mx-auto rounded-lg p-3 text-center text-2xl mt-5 mb-5 bg-gray-800 shadow-lg text-white">
+      <h1 className="w-3/4 p-3 mx-auto mt-5 mb-5 text-2xl text-center text-white bg-gray-800 rounded-lg shadow-lg">
         VG BHIDE EVENTS
       </h1>
       {data === null ? (
         <div className="text-center">
-          <h1 className="text-center text-xl mt-32 mb-32">
+          <h1 className="mt-32 mb-32 text-xl text-center">
             <Spinner className="m-4" size="xl" />
             <br />
             <span className="">This may take time, Please Wait...</span>
@@ -114,12 +128,12 @@ function Blogs(props) {
         </div>
       ) : data.length === 0 ? (
         <div className="text-center">
-          <h1 className="text-center text-xl mt-32 mb-32 text-red-500">
+          <h1 className="mt-32 mb-32 text-xl text-center text-red-500">
             <span className="">NO RECORDS FOUND</span>
           </h1>
         </div>
       ) : (
-        <div className="md:p-5 d-block flex-column justify-content-center flex-wrap">
+        <div className="flex-wrap md:p-5 d-block flex-column justify-content-center">
           {data.map((blog, index) => {
             return (
               <div key={index} className="m-1">

@@ -8,9 +8,9 @@
 
 // function Homepage(props) {
 //   return (
-//     <div className=" text-white">
+//     <div className="text-white ">
 //       <div
-//   className="bg-cover bg-center"
+//   className="bg-center bg-cover"
 //   style={{
 //     backgroundImage:
 //       "url('https://vnit.ac.in/wp-content/uploads/2023/09/VNIT-Main-1024x623.jpg')",
@@ -19,12 +19,12 @@
 //   <Navbar {...props} />
 //   <section className="flex flex-col items-center justify-center py-24 bg-black bg-opacity-70">
 //     <h1
-//       className="text-7xl font-extrabold text-white mb-4 text-center tracking-widest"
+//       className="mb-4 font-extrabold tracking-widest text-center text-white text-7xl"
 //       style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
 //     >
 //       Unite, Celebrate, Thrive
 //     </h1>
-//     <h2 className="gradient-text tracking-widest text-white">
+//     <h2 className="tracking-widest text-white gradient-text">
 //       Your Hostel Life, Your Story!
 //     </h2>
 //     <Link to="/login">
@@ -56,11 +56,11 @@
 // </div>
 //       <div
 //         id="about-us"
-//         className="flex flex-col lg:flex-row border border-gray-700 mx-4 mt-3 mb-3"
+//         className="flex flex-col mx-4 mt-3 mb-3 border border-gray-700 lg:flex-row"
 //       >
-//         <div className="lg:w-1/2 w-6/7 m-auto">
-//           <div className="container lg:px-10 p-6 shadow-lg rounded-lg shadow-gray-800">
-//             <p className="font-bold text-2xl text-center text-black">About Us</p>
+//         <div className="m-auto lg:w-1/2 w-6/7">
+//           <div className="container p-6 rounded-lg shadow-lg lg:px-10 shadow-gray-800">
+//             <p className="text-2xl font-bold text-center text-black">About Us</p>
 
 //             <p className="mt-4 text-black">
 //               We are a group of individuals united by our love for astronomy and
@@ -79,7 +79,7 @@
 //             </p>
 //           </div>
 //         </div>
-//         <div className="lg:w-1/2 w-6/7 m-auto">
+//         <div className="m-auto lg:w-1/2 w-6/7">
 //           <img
 //             src="https://1.bp.blogspot.com/-MLX81cymNNs/X7QNIFT-RII/AAAAAAAAELc/2XG-Cxd0XRU0GJEO-3E0F6_MMutFkxdVQCLcBGAsYHQ/s1536/1898-lec3-1536x865.jpg"
 //             alt="Astronomy event"
@@ -89,11 +89,11 @@
 
 //       <div
 //         id="here"
-//         className="flex flex-col lg:flex-row-reverse border border-gray-700 mx-4 mt-3 mb-3"
+//         className="flex flex-col mx-4 mt-3 mb-3 border border-gray-700 lg:flex-row-reverse"
 //       >
-//         <div className="lg:w-1/2 w-6/7 m-auto">
-//           <div className="container lg:px-10 p-6 shadow-lg rounded-lg shadow-gray-800">
-//             <p className="font-bold text-2xl text-center">
+//         <div className="m-auto lg:w-1/2 w-6/7">
+//           <div className="container p-6 rounded-lg shadow-lg lg:px-10 shadow-gray-800">
+//             <p className="text-2xl font-bold text-center">
 //               Our Goal <span className="big">🎯</span>
 //             </p>
 //             <br />
@@ -130,7 +130,7 @@
 //             </p>
 //           </div>
 //         </div>
-//         <div className="lg:w-1/2 w-6/7 m-auto">
+//         <div className="m-auto lg:w-1/2 w-6/7">
 //           <img
 //             width="600px"
 //             className=""
@@ -170,7 +170,7 @@
 //   return (
 //     <div className="text-white">
 //       <div
-//         className="bg-cover bg-center"
+//         className="bg-center bg-cover"
 //         style={{
 //           backgroundImage: `url(${backgroundImage})`,
 //           minHeight: "85vh",
@@ -181,12 +181,12 @@
 
 //         <section className="flex flex-col items-center justify-center py-24 bg-gray-800 bg-opacity-70">
 //           <h1
-//             className="text-7xl font-extrabold text-white mb-4 text-center tracking-widest"
+//             className="mb-4 font-extrabold tracking-widest text-center text-white text-7xl"
 //             style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
 //           >
 //             Unite, Celebrate, Thrive
 //           </h1>
-//           <h2 className="gradient-text tracking-widest text-white">
+//           <h2 className="tracking-widest text-white gradient-text">
 //             Your Hostel Life, Your Story!
 //           </h2>
 //           <Link to="/login">
@@ -220,11 +220,11 @@
 //       {/* About Us Section */}
 //       <div
 //         id="about-us"
-//         className="flex flex-col lg:flex-row border border-gray-700 mx-4 mt-3 mb-3"
+//         className="flex flex-col mx-4 mt-3 mb-3 border border-gray-700 lg:flex-row"
 //       >
-//         <div className="lg:w-1/2 w-6/7 m-auto">
-//           <div className="container lg:px-10 p-6 shadow-lg rounded-lg shadow-gray-800">
-//             <p className="font-bold text-2xl text-center text-black">About Us</p>
+//         <div className="m-auto lg:w-1/2 w-6/7">
+//           <div className="container p-6 rounded-lg shadow-lg lg:px-10 shadow-gray-800">
+//             <p className="text-2xl font-bold text-center text-black">About Us</p>
 //             <p className="mt-4 text-black">
 //               We are a group of individuals united by our love for astronomy and
 //               passion for exploring the universe. As a club, we organize a
@@ -242,7 +242,7 @@
 //             </p>
 //           </div>
 //         </div>
-//         <div className="lg:w-1/2 w-6/7 m-auto">
+//         <div className="m-auto lg:w-1/2 w-6/7">
 //           <img
 //             src="https://1.bp.blogspot.com/-MLX81cymNNs/X7QNIFT-RII/AAAAAAAAELc/2XG-Cxd0XRU0GJEO-3E0F6_MMutFkxdVQCLcBGAsYHQ/s1536/1898-lec3-1536x865.jpg"
 //             alt="Astronomy event"
@@ -253,11 +253,11 @@
 //       {/* Goals Section */}
 //       <div
 //         id="here"
-//         className="flex flex-col lg:flex-row-reverse border border-gray-700 mx-4 mt-3 mb-3"
+//         className="flex flex-col mx-4 mt-3 mb-3 border border-gray-700 lg:flex-row-reverse"
 //       >
-//         <div className="lg:w-1/2 w-6/7 m-auto">
-//           <div className="container lg:px-10 p-6 shadow-lg rounded-lg shadow-gray-800">
-//             <p className="font-bold text-2xl text-center">
+//         <div className="m-auto lg:w-1/2 w-6/7">
+//           <div className="container p-6 rounded-lg shadow-lg lg:px-10 shadow-gray-800">
+//             <p className="text-2xl font-bold text-center">
 //               Our Goal <span className="big">🎯</span>
 //             </p>
 //             <br />
@@ -294,7 +294,7 @@
 //             </p>
 //           </div>
 //         </div>
-//         <div className="lg:w-1/2 w-6/7 m-auto">
+//         <div className="m-auto lg:w-1/2 w-6/7">
 //           <img
 //             width="600px"
 //             className=""
@@ -346,7 +346,7 @@
 //   return (
 //     <div className="text-white">
 //       <div
-//         className="bg-cover bg-center"
+//         className="bg-center bg-cover"
 //         style={{
 //           backgroundImage: `url(${backgroundImage})`,
 //           minHeight: "85vh",
@@ -356,12 +356,12 @@
 
 //         <section className="flex flex-col items-center justify-center py-24 bg-gray-800 bg-opacity-70">
 //           <h1
-//             className="text-7xl font-extrabold text-white mb-4 text-center tracking-widest"
+//             className="mb-4 font-extrabold tracking-widest text-center text-white text-7xl"
 //             style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
 //           >
 //             Unite, Celebrate, Thrive
 //           </h1>
-//           <h2 className="gradient-text tracking-widest text-white">
+//           <h2 className="tracking-widest text-white gradient-text">
 //             Your Hostel Life, Your Story!
 //           </h2>
 //           <Link to="/login">
@@ -391,14 +391,14 @@
 //           </Link>
 //         </section>
 //       </div>
-//       <div className="container mt-10 px-4">
-//         <h2 className="text-3xl text-center mb-6 font-bold">Latest Blogs</h2>
+//       <div className="container px-4 mt-10">
+//         <h2 className="mb-6 text-3xl font-bold text-center">Latest Blogs</h2>
 //         {data === null ? (
 //           <div className="text-center">
-//             <h1 className="text-xl mt-32 mb-32">Loading blogs...</h1>
+//             <h1 className="mt-32 mb-32 text-xl">Loading blogs...</h1>
 //           </div>
 //         ) : (
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
 //             {data.slice(0, 3).map((blog, index) => (
 //               <div key={index} className="m-1">
 //                 <Blogcard data={blog} />
@@ -406,7 +406,7 @@
 //             ))}
 //           </div>
 //         )}
-//         <div className="text-center mt-8">
+//         <div className="mt-8 text-center">
 //           <Link to="/blogs">
 //             <Button className="m-3" variant="outline" colorScheme="linkedin">
 //               Read All Blogs
@@ -444,15 +444,19 @@ function Homepage(props) {
   useEffect(() => {
     axios.get("http://localhost:5000/blog/blogs").then((res) => {
       let temp = res.data.data;
-      temp.reverse();
-      setData(temp);
+      if(!temp || temp.length === 0) {
+        setData([]);
+      }else{
+        temp.reverse();
+        setData(temp);
+      }
     });
   }, []);
 
   return (
     <div className="text-white">
       <div
-        className="bg-cover bg-center"
+        className="bg-center bg-cover"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           minHeight: "90vh",
@@ -462,12 +466,12 @@ function Homepage(props) {
 
         <section className="flex flex-col items-center justify-center py-24 bg-gray-800 bg-opacity-70">
           <h1
-            className="text-7xl font-extrabold text-white mb-4 text-center tracking-widest"
+            className="mb-4 font-extrabold tracking-widest text-center text-white text-7xl"
             style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
           >
             Unite, Celebrate, Thrive
           </h1>
-          <h2 className="gradient-text tracking-widest text-white">
+          <h2 className="tracking-widest text-white gradient-text">
             Your Hostel Life, Your Story!
           </h2>
           <Link to="/login">
@@ -498,14 +502,14 @@ function Homepage(props) {
         </section>
       </div>
 
-      {/* <div className="container mt-10 px-4">
-        <h2 className="text-3xl text-center mb-6 font-bold">Latest Blogs</h2>
+      {/* <div className="container px-4 mt-10">
+        <h2 className="mb-6 text-3xl font-bold text-center">Latest Blogs</h2>
         {data === null ? (
           <div className="text-center">
-            <h1 className="text-xl mt-32 mb-32">Loading blogs...</h1>
+            <h1 className="mt-32 mb-32 text-xl">Loading blogs...</h1>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {data.slice(0, 3).map((blog, index) => (
               <div key={index} className="m-1">
                 <Blogcard data={blog} />
@@ -513,7 +517,7 @@ function Homepage(props) {
             ))}
           </div>
         )}
-        <div className="text-center mt-8">
+        <div className="mt-8 text-center">
           <Link to="/blogs">
             <Button className="m-3" variant="outline" colorScheme="linkedin">
               Read All Blogs

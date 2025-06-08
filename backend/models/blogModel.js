@@ -22,6 +22,8 @@ let blogSchema = mongoose.Schema({
   blog: String,
   eventDate: String, 
   eventTime: String,
+  eventEndDate: String, 
+  eventEndTime: String,
   location: String,  
   userId: String,    
   token: String,     

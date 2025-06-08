@@ -29,17 +29,20 @@ function App() {
     if (callCount === 0) {
       isLoggedin();
     }
-  });
+  },[callCount,token]);
+
   function isLoggedin() {
-    if (cookies.get("authToken") === undefined) {
+    console.log(cookies.get("authToken"),callCount)
+    if (!cookies.get("authToken")) {
       setCallCount(callCount + 1);
       return;
     } else {
       axios
-        .get("https://aac-backend-25.onrender.com/user/getUserInfo", {
-          params: {
-            token: cookies.get("authToken"),
+        .get("http://localhost:5000/user/getUserInfo", {
+          headers: {
+            Authorization: `Bearer ${cookies.get("authToken")}`,
           },
+          withCredentials: true, // Include credentials properly
         })
         .then((res) => {
           setLogin(res.data.isLoggedin);

@@ -1,6 +1,5 @@
-
 import React from "react";
-import { createRoot } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
 import App from "./App";
 import "./style.css";
@@ -18,10 +17,10 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <EventProvider>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
-    </ChakraProvider>
-  </EventProvider>
+    <EventProvider>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App />
+      </ChakraProvider>
+    </EventProvider> 
 );

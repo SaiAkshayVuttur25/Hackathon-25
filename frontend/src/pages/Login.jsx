@@ -57,6 +57,40 @@ function Login(props) {
     setmPassword("");
   }
 
+  // function handleSubmit() {
+  //   if (username === "" || password === "") {
+  //     setMessage(2);
+  //     return;
+  //   }
+  //   setSubmit(true);
+  //   axios
+  //     .post("http://localhost:5000/user/login", {
+  //       username: username,
+  //       password: password,
+  //     }, {
+  //       headers: {
+  //         Authorization: `Bearer ${res.data.token}`,  // Send token in headers
+  //       },
+  //       withCredentials: true, // Include credentials (cookies)
+  //     })
+  //     .then((res) => {
+  //       setMessage(res.data.message);
+  //       if (res.data.isLoggedin === true) {
+  //         props.setLogin(true);
+  //         props.setUser(res.data.user);
+  //         cookies.set("authToken", res.data.token, {
+  //           path: "/",
+  //           maxAge: 5 * 60 * 60 ,
+  //            secure: false,
+  //         });
+  //         props.setToken(res.data.token);
+  //       }
+  //       setSubmit(false);
+  //       if (res.data.message === 1) {
+  //         inputClear();
+  //       }
+  //     });
+  // }
   function handleSubmit() {
     if (username === "" || password === "") {
       setMessage(2);
@@ -75,8 +109,8 @@ function Login(props) {
           props.setUser(res.data.user);
           cookies.set("authToken", res.data.token, {
             path: "/",
-            maxAge: 5 * 60 * 60 * 1000,
-            secure: true,
+            maxAge: 5 * 60 * 60,
+            secure: false,
           });
           props.setToken(res.data.token);
         }
@@ -84,8 +118,13 @@ function Login(props) {
         if (res.data.message === 1) {
           inputClear();
         }
+      })
+      .catch((err) => {
+        console.error("Error logging in:", err);
+        setSubmit(false);
       });
   }
+  
 
   function handleReset() {
     if (musername === "" || mpassword === "" || menrollment === "") {
@@ -143,7 +182,7 @@ function Login(props) {
               placeholder=""
               className="input-field"
             />
-            <label for="email" className="labelline">
+            <label htmlFor="email" className="labelline">
               username <span className="text-red-500">*</span>
             </label>
           </div>
@@ -155,7 +194,7 @@ function Login(props) {
               type="password"
               className="input-field"
             />
-            <label for="password" className="labelline">
+            <label htmlFor="password" className="labelline">
               Password <span className="text-red-500">*</span>
             </label>
           </div>
@@ -242,7 +281,7 @@ function Login(props) {
                 Reset Password
               </h1>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <div className="mb-2">
                 <label htmlFor="email" className="block text-sm  text-gray-800">
                   Username <span className="text-red-500">*</span>

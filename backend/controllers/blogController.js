@@ -54,7 +54,7 @@ exports.pending = async (req, res) => {
   }
 };
 exports.postblog = async (req, res) => {
-  const { title, blog, userId,eventDate,eventTime,location } = req.body;
+  const { title, blog, userId,eventDate,eventTime,eventEndDate,eventEndTime,location } = req.body;
 
   // Check if required fields are provided
   if (!title || !blog || !userId) {
@@ -81,6 +81,8 @@ exports.postblog = async (req, res) => {
     time: timeFormatter.format(now),
     eventDate,
     eventTime ,
+    eventEndDate,
+    eventEndTime ,
     location,
     userId,
     message: undefined,
@@ -91,9 +93,9 @@ exports.postblog = async (req, res) => {
 
   try {
     await newBlog.save();
-    return res.send({ message: 1 }); // Send success response
+    return res.send({ message: 1 }); 
   } catch (err) {
-    return res.status(500).send({ message: 2 }); // Send error response
+    return res.status(500).send({ message: 2 });
   }
 };
 
@@ -132,7 +134,7 @@ exports.delete = async (req, res) => {
 
 exports.updateVote = async (req, res) => {
   const { eventId } = req.params;
-  const { vote } = req.body; 
+  const { vote,increase } = req.body; 
 
   try {
     const event = await Blog.findById(eventId); // Find the event by ID
@@ -142,10 +144,18 @@ exports.updateVote = async (req, res) => {
     }
 
     // Update the vote count
-    if (vote === 'yes') {
-      event.participants += 1;
-    } else if (vote === 'no') {
-      event.Notparticipants += 1;
+    if(increase){
+      if (vote === 'yes') {
+        event.participants += 1;
+      } else if (vote === 'no') {
+        event.Notparticipants += 1;
+      }
+    }else{
+      if (vote === 'yes') {
+        event.participants -= 1;
+      } else if (vote === 'no') {
+        event.Notparticipants -= 1;
+      }
     }
 
     await event.save(); // Save the updated event

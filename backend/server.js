@@ -31,16 +31,22 @@ let transport = nodemailer.createTransport({
 });
 const PORT = process.env.PORT || 5000;
 
-if(process.env.NODE_STATUS === "development" ) {
-  app.use(cors());
-}
-else {
+if (process.env.NODE_STATUS === "development") {
   app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-  })
-);
+    cors({
+      origin: ["http://localhost:5000","http://localhost:3000"], //
+      credentials: true, // 
+    })
+  );
+} else {
+  app.use(
+    cors({
+      origin: ["https://your-production-domain.com"], // ✅ Use production URL
+      credentials: true,
+    })
+  );
 }
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -53,7 +59,7 @@ app.post("/contact", (req, res) => {
   let mailOptions = {
     from: req.query.email,
     to: "saiakshayvuttur25@gmail.com",
-    subject: "From Astronomy Website",
+    subject: "From VNIT College Events Website",
     text: req.query.name + " " + req.query.email + " " + req.query.text,
   };
 

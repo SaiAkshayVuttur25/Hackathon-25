@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const { User } = require("../models/userModel");
+
 const { Blog } = require("../models/blogModel");
 
 exports.getBlogs = async (req, res) => {

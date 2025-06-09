@@ -4,13 +4,16 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
+
 const nodemailer = require("nodemailer");
+const bodyParser = require("body-parser");
+
 const userRoutes = require("./routes/userRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const resRoutes = require("./routes/resourceRoutes");
-const bodyParser = require("body-parser");
-
+const eventRoutes = require("./routes/eventRoutes")
+const {authenticateLogin} = require("./middlewares/authenticateLogin.js");
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URI, () => {
@@ -54,8 +57,10 @@ app.use("/user", userRoutes);
 app.use("/blog", blogRoutes);
 app.use("/admin", adminRoutes);
 app.use("/resource", resRoutes);
+app.use("/event", eventRoutes);
 
-app.post("/contact", (req, res) => {
+
+app.post("/contact",authenticateLogin, (req, res) => {
   let mailOptions = {
     from: req.query.email,
     to: "saiakshayvuttur25@gmail.com",
@@ -73,78 +78,6 @@ app.post("/contact", (req, res) => {
     }
   });
 });
-
-const eventSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  start: { type: String, required: true },
-  end: { type: String, required: true },
-});
-
-const Event = mongoose.model('Event', eventSchema);
-
-app.get('/events', async (req, res) => {
-  try {
-      const events = await Event.find();
-      res.status(200).json({ success: true, events });
-  } catch (err) {
-      res.status(500).json({ success: false, message: 'Error fetching events', error: err });
-  }
-});
-app.post('/events', async (req, res) => {
-  const { title, start, end } = req.body;
-
-  if (!title || !start || !end) {
-      return res.status(400).json({ success: false, message: 'All fields are required' });
-  }
-
-  try {
-      const newEvent = new Event({ title, start, end });
-      await newEvent.save();
-      res.status(201).json({ success: true, event: newEvent });
-  } catch (err) {
-      res.status(500).json({ success: false, message: 'Error adding event', error: err });
-  }
-});
-
-// Update an event
-app.patch('/events/:id', async (req, res) => {
-  const eventId = req.params.id;
-  const { title, start, end } = req.body;
-
-  try {
-      const updatedEvent = await Event.findByIdAndUpdate(
-          eventId,
-          { title, start, end },
-          { new: true }
-      );
-
-      if (!updatedEvent) {
-          return res.status(404).json({ success: false, message: 'Event not found' });
-      }
-
-      res.status(200).json({ success: true, event: updatedEvent });
-  } catch (err) {
-      res.status(500).json({ success: false, message: 'Error updating event', error: err });
-  }
-});
-
-// Delete an event
-app.delete('/events/:id', async (req, res) => {
-  const eventId = req.params.id;
-
-  try {
-      const deletedEvent = await Event.findByIdAndDelete(eventId);
-
-      if (!deletedEvent) {
-          return res.status(404).json({ success: false, message: 'Event not found' });
-      }
-
-      res.status(200).json({ success: true, message: 'Event deleted', event: deletedEvent });
-  } catch (err) {
-      res.status(500).json({ success: false, message: 'Error deleting event', error: err });
-  }
-});
-
 
 app.listen(PORT, (req, res) => {
   console.log(`Server initialised on PORT ${PORT}`);

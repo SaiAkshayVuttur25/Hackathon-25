@@ -30,7 +30,7 @@ const secret = process.env.JWT_KEY;
 
 function authenticateLogin(req, res, next) {
   // Get token from Authorization header or cookies
-  let token = req.headers.authorization?.split(" ")[1] || req.cookies.authToken;
+  let token = req.headers.authorization?.split(" ")[1] ;
 
   // Check if token is missing
   if (!token) {
@@ -46,6 +46,7 @@ function authenticateLogin(req, res, next) {
     } else {
       // Store user data in res.locals for downstream use
       res.locals.user = data;
+      console.log("Authenticated user:", data);
       next();
     }
   });

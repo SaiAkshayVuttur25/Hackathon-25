@@ -1,11 +1,12 @@
 
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Navbar from "../components/Navbar";
 import { EventContext } from "./EventsComponent";
+import { ToastContainer, toast } from 'react-toastify';
 
 // Initialize moment localizer
 const localizer = momentLocalizer(moment);
@@ -15,7 +16,7 @@ const Resources = (props) => {
   const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/events").then((res) => {
+    axios.get("http://localhost:5000/event/get-events").then((res) => {
       setEvents(
         res.data.events.map((event) => ({
           ...event,
@@ -31,6 +32,10 @@ const Resources = (props) => {
     setNewEvent((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validInfo = () => toast.error("Please provide Valid Title or Date",{position: "top-center"});
+
+  const deleteError = () => toast("Failed to delete the event. Please try again.");
+
   const handleAddEvent = () => {
     const startDate = new Date(newEvent.start);
     const endDate = new Date(newEvent.end);
@@ -41,7 +46,7 @@ const Resources = (props) => {
       isNaN(endDate) ||
       startDate >= endDate
     ) {
-      alert("Please provide a valid title, start date, and end date.");
+      validInfo();
       return;
     }
 
@@ -51,7 +56,7 @@ const Resources = (props) => {
       end: endDate.toISOString(),
     };
 
-    axios.post("http://localhost:5000/events", event).then((res) => {
+    axios.post("http://localhost:5000/event/post-event", event).then((res) => {
       setEvents([
         ...events,
         {
@@ -66,13 +71,13 @@ const Resources = (props) => {
 
   const handleDeleteEvent = (eventId) => {
     axios
-      .delete(`http://localhost:5000/events/${eventId}`)
+      .delete(`http://localhost:5000/event/events/${eventId}`)
       .then((res) => {
         setEvents(events.filter((event) => event._id !== eventId));
       })
       .catch((err) => {
         console.error("Error deleting event:", err);
-        alert("Failed to delete the event. Please try again.");
+        deleteError();
       });
   };
 
@@ -80,15 +85,27 @@ const Resources = (props) => {
   return (
     <div className="min-h-screen bg-[#f8f9fa]">
       <Navbar user={{ isAdmin: true }} {...props} />
-      
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-1/3 flex flex-col gap-6">
-            <div className="bg-gray-800 rounded-xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-blue-400 mb-4">Schedule Event</h3>
+      {/* <ToastContainer /> */}
+      <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={true}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
+      <div className="container px-4 py-8 mx-auto">
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <div className="flex flex-col gap-6 lg:w-1/3">
+            <div className="p-6 bg-gray-800 shadow-xl rounded-xl">
+              <h3 className="mb-4 text-xl font-bold text-blue-400">Schedule Event</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-300">
                     Event Title
                   </label>
                   <input
@@ -96,14 +113,14 @@ const Resources = (props) => {
                     name="title"
                     value={newEvent.title}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 text-gray-100 bg-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Team meeting"
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-300">
                       Start
                     </label>
                     <input
@@ -111,11 +128,11 @@ const Resources = (props) => {
                       name="start"
                       value={newEvent.start}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 text-gray-100 bg-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-300">
                       End
                     </label>
                     <input
@@ -123,7 +140,7 @@ const Resources = (props) => {
                       name="end"
                       value={newEvent.end}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 text-gray-100 bg-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                 </div>
@@ -138,13 +155,13 @@ const Resources = (props) => {
             </div>
 
             {/* Event List */}
-            <div className="bg-gray-800 rounded-xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-blue-400 mb-4">Scheduled Events</h3>
-              <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+            <div className="p-6 bg-gray-800 shadow-xl rounded-xl">
+              <h3 className="mb-4 text-xl font-bold text-blue-400">Scheduled Events</h3>
+              <div className="pr-2 space-y-3 overflow-y-auto max-h-96">
                 {events.map((event) => (
                   <div
                     key={event._id}
-                    className="flex items-center justify-between p-3 bg-gray-700 rounded-lg group hover:bg-gray-600 transition-colors"
+                    className="flex items-center justify-between p-3 transition-colors bg-gray-700 rounded-lg group hover:bg-gray-600"
                   >
                     <span className="text-gray-200 truncate">{event.title}</span>
                     <button
@@ -160,7 +177,7 @@ const Resources = (props) => {
           </div>
 
           {/* <div className="lg:w-2/3">
-            <div className="bg-white rounded-xl p-6 shadow-xl">
+            <div className="p-6 bg-white shadow-xl rounded-xl">
               <Calendar
                 localizer={localizer}
                 events={events}

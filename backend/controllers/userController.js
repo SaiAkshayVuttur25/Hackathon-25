@@ -11,7 +11,6 @@ let secret = process.env.JWT_KEY;
 
 exports.getUserInfo = (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(token)
 
   if (!token) {
     return res.status(401).json({
@@ -23,8 +22,6 @@ exports.getUserInfo = (req, res) => {
 
   jwt.verify(token, secret, (err, data) => {
     if (err) {
-      console.log("error");
-      console.log("JWT_KEY:", secret);
       return res.status(401).json({
         isLoggedin: false,
         user: { isAdmin: false },

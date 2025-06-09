@@ -3,11 +3,13 @@ import Navbar from "../components/Navbar";
 import { Skeleton } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import VotingSystemWithOneVote from "./VotingSystemWithOneVote"; // Import the voting system
+import VotingSystemWithOneVote from "./VotingSystemWithOneVote";
+import { ToastContainer , toast } from "react-toastify";
 
 function Showblog(props) {
     const { id } = useParams();
     const [data, setData] = useState(null); // Initialize as null to check for loading state
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!data) { // Check if data is null
@@ -28,64 +30,45 @@ function Showblog(props) {
         window.scrollTo(0, 0);
     }, []);
 
-    /*return (
-        <div className=" bg-[#f8f9fa] text-gray-100 min-h-screen">
-            <Navbar {...props} />
-            {!data ? ( // Check if data is null
-                <div className="w-3/4 m-auto">
-                    <br />
-                    <Skeleton height="90px" startColor="gray.700" endColor="gray.600" />
-                    <br />
-                    <Skeleton height="90px" startColor="gray.700" endColor="gray.600" />
-                    <br />
-                    <Skeleton height="90px" startColor="gray.700" endColor="gray.600" />
-                    <br />
-                    <Skeleton height="90px" startColor="gray.700" endColor="gray.600" />
-                    <br />AC
-                    <Skeleton height="90px" startColor="gray.700" endColor="gray.600" />
-                </div>
-            ) : (
-                <div className="w-11/12 md:w-3/4 bg-[#457B9D] text-gray-100 shadow-2xl border border-gray-700 m-auto p-5 rounded-lg mt-5">
-                    <div className="flex">
-                        <p className="font-bold text-2xl md:text-4xl">{data.title}</p>
-                    </div>
-                    <div className="mt-1 text-lg text-[#f1faee]">
-                        <p>
-                            By <span className="text-[#1d3557]">{data._id}</span>
-                        </p>
-                        <p>
-                            From {data.eventDate} at {data.eventTime} 
-                        </p>
-                        <p>
-                            To {(data.eventEndDate && data.eventEndTime) ? (`${data.eventEndDate} at ${data.eventEndTime}` ): ("Releasing Soon")}
-                        </p>
-                        <p>
-                            Location: <span className="text-[#1d3557]">{data.location}</span> 
-                        </p>
-                    </div>
-                    <hr className="bg-[#1d3557] h-1 mt-4" />
-                    <div className="mt-5 text-lg whitespace-pre-line">{data.blog}</div>
-                    {data.message && ( // Conditionally render message if it exists
-                        <div className="mt-4 text-[#f1faee]">
-                            <p>Message: {data.message}</p>
-                        </div>
-                    )}
-
-                    <VotingSystemWithOneVote eventId={id} Notparticipants={data.Notparticipants} participants={data.participants} token ={props.token}/>
-
-                    <div className="text-center mt-6 bg-gray-800 p-4 text-2xl rounded">
-                        THE END
-                    </div>
-                    
-
-                </div>
-            )}
-        </div>
-    );
-    */
+    const handleRemainder = async ()=>{
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `http://localhost:5000/event/events/${id}/remind-me`,
+                {},{
+                    headers: {
+                        Authorization: `Bearer ${props.token}` 
+                    }
+                }
+            );
+            // console.log(response);
+            if (response.data.message === "Email sent successfully") {
+                toast.success("Reminder set successfully!");
+            } else {
+                toast.error("Failed to set reminder.");
+            }
+        } 
+        catch (error) {
+            console.error(error);
+            toast.error("Failed to set reminder.");
+        }
+        setLoading(false);
+    }
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="min-h-screen bg-gray-50">
             <Navbar {...props} />
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             {!data ? (
                 <div className="w-3/4 m-auto">
                 <br />
@@ -104,9 +87,18 @@ function Showblog(props) {
                 <div className="w-11/12 md:w-3/4 bg-[#457B9D] shadow-xl m-auto p-6 md:p-8 rounded-xl mt-8 mb-8 border border-gray-200">
                     {/* Header Section */}
                     <div className="mb-6">
-                        <h1 className="font-bold text-3xl md:text-4xl text-gray-800 mb-3">
-                            {data.title}
-                        </h1>
+                        <div className="flex items-center justify-between">
+                            <h1 className="mb-3 text-3xl font-bold text-gray-800 md:text-4xl">
+                                {data.title}
+                            </h1>
+                            {!loading ? (<button className="px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleRemainder}>
+                                Remind Me
+                            </button>) : (<button className="px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"disabled >
+                                loading..
+                            </button>)}
+                            
+                            
+                        </div>
                         
                         {/* Event Details */}
                         <div className="space-y-2 text-gray-600">
@@ -131,11 +123,11 @@ function Showblog(props) {
                         </div>
                     </div>
 
-                    <hr className="border-4 border-gray-950 my-6" />
+                    <hr className="my-6 border-4 border-gray-950" />
 
                     {/* Blog Content */}
-                    <article className="prose max-w-none text-gray-800 mb-8 text-xl">
-                        <pre className="whitespace-pre-wrap font-sans">
+                    <article className="mb-8 text-xl prose text-gray-800 max-w-none">
+                        <pre className="font-sans whitespace-pre-wrap">
                             {data.blog}
                         </pre>
                     </article>
@@ -143,7 +135,7 @@ function Showblog(props) {
                     {/* Special Message */}
                     {data.message && (
                         <div className="bg-[#457b9d] p-4 rounded-lg border-2 border-blue-800 mb-6">
-                            <h3 className="text-cyan-900 font-semibold mb-2">Special Message:</h3>
+                            <h3 className="mb-2 font-semibold text-cyan-900">Special Message:</h3>
                             <p className="text-red-800">{data.message}</p>
                         </div>
                     )}
@@ -159,8 +151,8 @@ function Showblog(props) {
                     </div>
 
                     {/* End Section */}
-                    <div className="text-center mt-8 pt-6 border-t border-gray-200">
-                        <span className="text-gray-400 uppercase text-sm tracking-wider">
+                    <div className="pt-6 mt-8 text-center border-t border-gray-200">
+                        <span className="text-sm tracking-wider text-gray-400 uppercase">
                             Event Concluded
                         </span>
                     </div>

@@ -20,6 +20,63 @@ exports.getData = async (req, res) => {
   }
 };
 
+exports.postblog = async (req, res) => {
+  const {
+    title,
+    blog,
+    userId,
+    eventDate,
+    eventTime,
+    eventEndDate,
+    eventEndTime,
+    location
+  } = req.body;
+
+  if (!title || !blog || !userId) {
+    return res.status(400).send({ message: "All fields are required." });
+  }
+
+  // console.log(title,blog,userId,eventDate,eventTime,eventEndDate,eventEndTime,location);
+  const now = new Date();
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  });
+  const timeFormatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+
+  const expireAt = new Date(`${eventEndDate}T${eventEndTime}:00+05:30`);
+
+  const newBlog = new Blog({
+    isApproved: false,
+    title,
+    blog,
+    date: dateFormatter.format(now),
+    time: timeFormatter.format(now),
+    eventDate,
+    eventTime,
+    eventEndDate,
+    eventEndTime,
+    location,
+    userId,
+    message: "Keep in touch with us for updates",
+    participants: 0,
+    Notparticipants: 0,
+    expireAt
+  });
+
+  try {
+    await newBlog.save();
+    return res.send({ message: 1 });
+  } catch (err) {
+    return res.status(500).send({ message: 2 });
+  }
+};
+
 exports.getBlogData = async (req, res) => {
   const { id } = req.query;
   try {
@@ -52,51 +109,6 @@ exports.pending = async (req, res) => {
     res.send({ message: 0 });
   }
 };
-exports.postblog = async (req, res) => {
-  const { title, blog, userId,eventDate,eventTime,eventEndDate,eventEndTime,location } = req.body;
-
-  // Check if required fields are provided
-  if (!title || !blog || !userId) {
-    return res.status(400).send({ message: "All fields are required." });
-  }
-
-  const now = new Date();
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-  });
-  const timeFormatter = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
-
-  const newBlog = new Blog({
-    isApproved: false,
-    title,
-    blog,
-    date: dateFormatter.format(now),
-    time: timeFormatter.format(now),
-    eventDate,
-    eventTime ,
-    eventEndDate,
-    eventEndTime ,
-    location,
-    userId,
-    message: undefined,
-    participants:0,
-    Notparticipants:0,
-  });
-
-
-  try {
-    await newBlog.save();
-    return res.send({ message: 1 }); 
-  } catch (err) {
-    return res.status(500).send({ message: 2 });
-  }
-};
 
 exports.approve = async (req, res) => {
   const { id, message } = req.body;
@@ -112,7 +124,8 @@ exports.approve = async (req, res) => {
 exports.reject = async (req, res) => {
   const { id, message } = req.body;
   try {
-    await Blog.updateOne({ _id: id }, { message });
+    // await Blog.updateOne({ _id: id }, { message });
+    await Blog.deleteOne({ _id: id });
     const pendingBlogs = await Blog.find({ isApproved: false });
     res.send({ message: 2, data: pendingBlogs });
   } catch (err) {
@@ -131,35 +144,83 @@ exports.delete = async (req, res) => {
   }
 };
 
-exports.updateVote = async (req, res) => {
-  const { eventId } = req.params;
-  const { vote,increase } = req.body; 
+// exports.updateVote = async (req, res) => {
+//   const { eventId } = req.params;
+//   const { vote,increase } = req.body; 
 
-  try {
-    const event = await Blog.findById(eventId); // Find the event by ID
+//   try {
+//     const event = await Blog.findById(eventId); // Find the event by ID
 
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
+//     if (!event) {
+//       return res.status(404).json({ message: "Event not found" });
+//     }
 
-    // Update the vote count
-    if(increase){
-      if (vote === 'yes') {
-        event.participants += 1;
-      } else if (vote === 'no') {
-        event.Notparticipants += 1;
-      }
-    }else{
-      if (vote === 'yes') {
-        event.participants -= 1;
-      } else if (vote === 'no') {
-        event.Notparticipants -= 1;
-      }
-    }
+//     // Update the vote count
+//     if(increase){
+//       if (vote === 'yes') {
+//         event.participants += 1;
+//       } else if (vote === 'no') {
+//         event.Notparticipants += 1;
+//       }
+//     }else{
+//       if (vote === 'yes') {
+//         event.participants -= 1;
+//       } else if (vote === 'no') {
+//         event.Notparticipants -= 1;
+//       }
+//     }
 
-    await event.save(); // Save the updated event
-    res.json(event); // Return the updated event data back to the frontend
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+//     await event.save(); // Save the updated event
+//     res.json(event); // Return the updated event data back to the frontend
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+
+
+    // exports.postblog = async (req, res) => {
+    //   const { title, blog, userId,eventDate,eventTime,eventEndDate,eventEndTime,location } = req.body;
+    
+    //   // Check if required fields are provided
+    //   if (!title || !blog || !userId) {
+    //     return res.status(400).send({ message: "All fields are required." });
+    //   }
+    
+    //   const now = new Date();
+    //   const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    //     year: "numeric",
+    //     month: "long",
+    //     day: "2-digit",
+    //   });
+    //   const timeFormatter = new Intl.DateTimeFormat("en-US", {
+    //     hour: "numeric",
+    //     minute: "numeric",
+    //     hour12: true,
+    //   });
+    
+    //   const newBlog = new Blog({
+    //     isApproved: false,
+    //     title,
+    //     blog,
+    //     date: dateFormatter.format(now),
+    //     time: timeFormatter.format(now),
+    //     eventDate,
+    //     eventTime ,
+    //     eventEndDate,
+    //     eventEndTime ,
+    //     location,
+    //     userId,
+    //     message: undefined,
+    //     participants:0,
+    //     Notparticipants:0,
+    //   });
+    
+    
+    //   try {
+    //     await newBlog.save();
+    //     return res.send({ message: 1 }); 
+    //   } catch (err) {
+    //     return res.status(500).send({ message: 2 });
+    //   }
+    // };

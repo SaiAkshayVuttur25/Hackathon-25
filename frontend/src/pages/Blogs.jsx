@@ -1,67 +1,5 @@
-// import React, { useState, useEffect } from "react";
-// import Navbar from "../components/Navbar";
-// import Blogcard from "../components/Blogcard";
-// import axios from "axios";
-// import { Spinner } from "@chakra-ui/react";
-// function Blogs(props) {
-//   const [data, setData] = useState(null);
-//   const [callCount, setCallCount] = useState(0);
 
-//   useEffect(() => {
-//     if (callCount === 0) {
-//       axios.get("http://localhost:5000/blog/blogs").then((res) => {
-//         setData(() => {
-//           let temp = res.data.data;
-//           temp.reverse();
-//           return temp;
-//         });
-//         setCallCount(1);
-//       });
-//     }
-//   });
-//   useEffect(() => {
-//     window.scrollTo(0, 0);
-//   }, []);
-
-//   return (
-//     <div className="min-h-screen bg-black blog-bg">
-//       <Navbar {...props} />
-//       <h1 className="w-3/4 p-3 mx-auto mt-5 mb-5 text-2xl text-center text-white bg-gray-800 rounded-lg shadow-lg">
-//         VG BHIDE EVENTS
-//       </h1>
-//       {data === null ? (
-//           <div className="text-center">
-//             <h1 className="mt-32 mb-32 text-xl text-center">
-//             <Spinner className="m-4" size="xl" />
-//             <br />
-//             <span className="">This may take time, Please Wait...</span>
-//           </h1>
-//         </div>
-//       ) : data.length === 0 ? (
-//         <div className="text-center">
-//           <h1 className="mt-32 mb-32 text-xl text-center">
-//             <span className="">NO RECORDS FOUND</span>
-//           </h1>
-//         </div>
-//       ) : (
-//         <div className="flex-wrap md:p-5 d-block flex-column justify-content-center">
-//           {data.map((blog, index) => {
-//             return (
-//               <div key={index} className="m-1">
-//                 <Blogcard data={blog} />
-//               </div>
-//             );
-//           })}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Blogs;
-
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Blogcard from "../components/Blogcard";
 import axios from "axios";
@@ -71,30 +9,7 @@ function Blogs(props) {
   //console.log("Blogs",props)
   const [data, setData] = useState([]);
   const [callCount, setCallCount] = useState(0);
-
-  // useEffect(() => {
-  //   if (callCount === 0) {
-  //     axios.get("http://localhost:5000/blog/blogs").then((res) => {
-  //       console.log(res.data);
-  //       console.log(res)
-  //       // Assuming the response data structure has the same fields as provided in the document
-  //       const formattedData = res.data.map(blog => ({
-  //         ...blog,
-  //         // Ensuring the required fields from the response match
-  //         isApproved: blog.isApproved || false,
-  //         userId: blog.userId || "Unknown", 
-  //         token: blog.token || "0000", 
-  //         message: blog.message || "No message",
-  //         date: blog.eventDate,  // Assuming eventDate as date
-  //         time: blog.eventTime,  // Assuming eventTime as time
-          
-  //       }));
-
-  //       setData(formattedData.reverse()); // Reverse data if needed
-  //       setCallCount(1);
-  //     });
-  //   }
-  // }, [callCount]);
+  
   useEffect(() => {
     if (callCount === 0) {
       axios.get("http://localhost:5000/blog/blogs").then((res) => {
@@ -116,7 +31,7 @@ function Blogs(props) {
     <div className=" bg-[#f1faee] min-h-screen">
       <Navbar {...props} />
       <h1 className="w-3/4 p-3 mx-auto mt-5 mb-5 text-2xl text-center text-white bg-gray-800 rounded-lg shadow-lg">
-        VG BHIDE EVENTS
+        VNIT EVENTS
       </h1>
       {data === null ? (
         <div className="text-center">

@@ -12,12 +12,12 @@ const userRoutes = require("./routes/userRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const resRoutes = require("./routes/resourceRoutes");
-const eventRoutes = require("./routes/eventRoutes")
-const {authenticateLogin} = require("./middlewares/authenticateLogin.js");
+const eventRoutes = require("./routes/eventRoutes");
+const { authenticateLogin } = require("./middlewares/authenticateLogin.js");
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URI, () => {
-  console.log("Connected to MongoDB");
+  // console.log("Connected to MongoDB");
 });
 
 let transport = nodemailer.createTransport({
@@ -37,8 +37,8 @@ const PORT = process.env.PORT || 5000;
 if (process.env.NODE_STATUS === "development") {
   app.use(
     cors({
-      origin: ["http://localhost:5000","http://localhost:3000"], //
-      credentials: true, // 
+      origin: ["http://localhost:5000", "http://localhost:3000"], //
+      credentials: true, //
     })
   );
 } else {
@@ -59,8 +59,7 @@ app.use("/admin", adminRoutes);
 app.use("/resource", resRoutes);
 app.use("/event", eventRoutes);
 
-
-app.post("/contact",authenticateLogin, (req, res) => {
+app.post("/contact", authenticateLogin, (req, res) => {
   let mailOptions = {
     from: req.query.email,
     to: "saiakshayvuttur25@gmail.com",
@@ -70,15 +69,15 @@ app.post("/contact",authenticateLogin, (req, res) => {
 
   transport.sendMail(mailOptions, function (err, data) {
     if (err) {
-      console.log("Error " + err);
+      // console.log("Error " + err);
       res.send({ message: 0 });
     } else {
-      console.log("Email sent successfully");
+      // console.log("Email sent successfully");
       res.send({ message: 1 });
     }
   });
 });
 
 app.listen(PORT, (req, res) => {
-  console.log(`Server initialised on PORT ${PORT}`);
+   console.log(`Server initialised on PORT ${PORT}`);
 });

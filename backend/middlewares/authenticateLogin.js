@@ -7,7 +7,7 @@
 
 // function authenticateLogin(req, res, next) {
 //   let token = req.body.token;
-//   console.log(req.body,token,secret);
+   // console.log(req.body,token,secret);
 //   jwt.verify(token, secret, (err, data) => {
 //     if (err) {
 //       res.send({ message: "LOGIN FIRST" });
@@ -46,7 +46,7 @@ function authenticateLogin(req, res, next) {
     } else {
       // Store user data in res.locals for downstream use
       res.locals.user = data;
-      console.log("Authenticated user:", data);
+      // console.log("Authenticated user:", data);
       next();
     }
   });

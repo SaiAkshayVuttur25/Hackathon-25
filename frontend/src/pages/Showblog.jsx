@@ -35,7 +35,7 @@ function Showblog(props) {
         try {
             const response = await axios.post(
                 `http://localhost:5000/event/events/${id}/remind-me`,
-                {},{
+                {remind: true},{
                     headers: {
                         Authorization: `Bearer ${props.token}` 
                     }
@@ -49,7 +49,7 @@ function Showblog(props) {
             }
         } 
         catch (error) {
-            console.error(error);
+            // console.error(error);
             toast.error("Failed to set reminder.");
         }
         setLoading(false);

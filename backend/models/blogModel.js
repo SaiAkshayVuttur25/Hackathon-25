@@ -1,38 +1,24 @@
-// const mongoose = require("mongoose");
-// let blogSchema = mongoose.Schema({
-//   isApproved: Boolean,
-//   name: String,
-//   title: String,
-//   blog: String,
-//   date: String,
-//   time: String,
-//   userId: String,
-//   message: String,
-// });
-// const Blog = mongoose.model("blog", blogSchema);
-
-// module.exports = { Blog };
-
-
 const mongoose = require("mongoose");
 
-let blogSchema = mongoose.Schema({
+blogSchema = mongoose.Schema({
   isApproved: Boolean,
   title: String,
   blog: String,
-  eventDate: String, 
+  eventDate: String,
   eventTime: String,
-  eventEndDate: String, 
-  eventEndTime: String,
-  location: String,  
-  userId: String,    
-  token: String,     
+  eventEndDate: { type: String, required: true },
+  eventEndTime: { type: String, required: true },
+  expireAt: { type: Date ,expires: 0 }, // ← used for TTL
+  location: String,
+  userId: String,
+  token: String,
   message: String,
-  participants:Number,
-  Notparticipants:Number,
+  participants: { type: Number, default: 0 },
+  nonParticipants: { type: Number, default: 0 },
 
 });
 
-const Blog = mongoose.model("blog", blogSchema);
+blogSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
+const Blog = mongoose.model("blog", blogSchema);
 module.exports = { Blog };

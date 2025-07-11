@@ -14,6 +14,7 @@ import Myblogs from "./pages/Myblogs";
 import Signup from "./pages/Signup";
 import Editblog from "./pages/Editblog";
 import Cookies from "universal-cookie";
+import Navbar from "./components/Navbar";
 
 import Resources from "./pages/Resources";
 function App() {
@@ -32,7 +33,7 @@ function App() {
   },[callCount,token]);
 
   function isLoggedin() {
-    console.log(cookies.get("authToken"),callCount)
+    // console.log(cookies.get("authToken"),callCount)
     if (!cookies.get("authToken")) {
       setCallCount(callCount + 1);
       return;
@@ -200,12 +201,17 @@ function App() {
       path: "*",
       element: <Errorpage />,
     },
-  ]);
+  ],{
+    future: {
+      v7_relativeSplatPath: true,
+      v7_startTransition: true,
+    },
+  });
 
   return (
     <div className="min-h-screen">
+      
       <RouterProvider router={router} />
-
       <Footer />
     </div>
   );

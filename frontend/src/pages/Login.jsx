@@ -120,7 +120,7 @@ function Login(props) {
         }
       })
       .catch((err) => {
-        console.error("Error logging in:", err);
+        // console.error("Error logging in:", err);
         setSubmit(false);
       });
   }
@@ -159,14 +159,14 @@ function Login(props) {
   return (
     <div className="bg-[#edf2f4] relative flex flex-col justify-center overflow-hidden">
       <Navbar {...props} />
-      <div className="my-10 w-5/6 lg:w-5/12 p-6 m-auto bg-white rounded-md shadow-xl border h-full">
-        <h1 className="text-xl text-center text-black  ">
+      <div className="w-5/6 h-full p-6 m-auto my-10 bg-white border rounded-md shadow-xl lg:w-5/12">
+        <h1 className="text-xl text-center text-black ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50"
             height="50"
             fill="currentColor"
-            className="bi bi-person-fill-lock m-auto mb-4"
+            className="m-auto mb-4 bi bi-person-fill-lock"
             viewBox="0 0 16 16"
           >
             <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h5v-1a1.9 1.9 0 0 1 .01-.2 4.49 4.49 0 0 1 1.534-3.693C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Zm7 0a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2Zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1Z" />
@@ -174,7 +174,7 @@ function Login(props) {
           <span className="">LOG IN</span>
         </h1>
         <form className="mt-6">
-          <div className="mb-3 relative">
+          <div className="relative mb-3">
             <input
               id="username"
               onChange={handleChange}
@@ -186,7 +186,7 @@ function Login(props) {
               username <span className="text-red-500">*</span>
             </label>
           </div>
-          <div className="mb-3 relative">
+          <div className="relative mb-3">
             <input
               id="password"
               onChange={handleChange}
@@ -199,7 +199,7 @@ function Login(props) {
             </label>
           </div>
           <span
-            className="hover:cursor-pointer text-blue-500 mt-5"
+            className="mt-5 text-blue-500 hover:cursor-pointer"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
@@ -214,7 +214,7 @@ function Login(props) {
               Login
             </Button>
             {submit ? (
-              <p className="text-center text-md mt-3">
+              <p className="mt-3 text-center text-md">
                 This may take time. Please Wait...
               </p>
             ) : (
@@ -283,20 +283,20 @@ function Login(props) {
             </div>
             <div className="modal-body">
               <div className="mb-2">
-                <label htmlFor="email" className="block text-sm  text-gray-800">
+                <label htmlFor="email" className="block text-sm text-gray-800">
                   Username <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="musername"
                   onChange={handleChange}
                   type="email"
-                  className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md  focus:ring-stone-800 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md focus:ring-stone-800 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
               <div className="mb-2">
                 <label
                   htmlFor="enrollment number"
-                  className="block text-sm  text-gray-800"
+                  className="block text-sm text-gray-800"
                 >
                   Enrollment Number <span className="text-red-500">*</span>
                 </label>
@@ -304,13 +304,13 @@ function Login(props) {
                   id="menrollment"
                   onChange={handleChange}
                   type="text"
-                  className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md  focus:ring-stone-800 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md focus:ring-stone-800 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
               <div className="mb-2">
                 <label
                   htmlFor="password"
-                  className="block text-sm  text-gray-800"
+                  className="block text-sm text-gray-800"
                 >
                   New Password <span className="text-red-500">*</span>
                 </label>

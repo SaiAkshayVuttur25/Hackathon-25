@@ -59,7 +59,7 @@ exports.register = async (req, res) => {
     await newUser.save();
     res.send({ message: 1 }); // Successfully registered
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.send({ message: 0 }); // Error occurred
   }
 };
@@ -76,7 +76,7 @@ exports.login = (req, res) => {
     },
     function (err, user) {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.send({
           message: 0,
           isLoggedin: false,
@@ -128,7 +128,7 @@ exports.resetPassword = (req, res) => {
     { password: newPassword },
     function (err, users) {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.send({ message: 3 });
       } else {
         if (users.matchedCount == 1) {
@@ -145,7 +145,7 @@ exports.myblogs = (req, res) => {
   let userid = req.body.userid;
   Blog.find({ userId: userid }, function (err, blogs) {
     if (err) {
-      console.log(err);
+      // console.log(err);
       res.send({ message: 0 });
     } else {
       res.send({ data: blogs });

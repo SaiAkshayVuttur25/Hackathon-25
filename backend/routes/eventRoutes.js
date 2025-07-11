@@ -6,7 +6,8 @@ const eventController = require("../controllers/eventController.js");
 const { authenticateLogin } = require("../middlewares/authenticateLogin");
 const { reminder } = require("../mail.js");
 
-router.get('/get-events', eventController.getEvents);
+// router.get('/get-events', eventController.getEvents);
+router.get('/get-events', eventController.getEventsWithRedis);
 
 router.post("/events/:id/like", authenticateLogin, eventController.likeEvent);
 router.post("/events/:id/remind-me", authenticateLogin, eventController.remindEvent, reminder);

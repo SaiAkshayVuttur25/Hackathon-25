@@ -1,5 +1,6 @@
 
 const { Blog } = require("../models/blogModel");
+const redis = require('../redis/redisClient.js');
 
 exports.getBlogs = async (req, res) => {
   try {
@@ -76,6 +77,69 @@ exports.postblog = async (req, res) => {
     return res.status(500).send({ message: 2 });
   }
 };
+
+exports.postblogWithRedis = async (req, res) => {
+  const {
+    title,
+    blog,
+    userId,
+    eventDate,
+    eventTime,
+    eventEndDate,
+    eventEndTime,
+    location
+  } = req.body;
+
+  if (!title || !blog || !userId) {
+    return res.status(400).send({ message: "All fields are required." });
+  }
+
+  const now = new Date();
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  });
+  const timeFormatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+
+  const expireAt = new Date(`${eventEndDate}T${eventEndTime}:00+05:30`);
+
+  const newBlog = new Blog({
+    isApproved: false,
+    title,
+    blog,
+    date: dateFormatter.format(now),
+    time: timeFormatter.format(now),
+    eventDate,
+    eventTime,
+    eventEndDate,
+    eventEndTime,
+    location,
+    userId,
+    message: "Keep in touch with us for updates",
+    participants: 0,
+    Notparticipants: 0,
+    expireAt
+  });
+
+  try {
+    await newBlog.save();
+
+    // Invalidate or update Redis cache
+    const updatedEvents = await Blog.find({});
+    await redis.set("allEvents", JSON.stringify(updatedEvents));
+    console.log("Redis cache updated after posting new blog");
+
+    return res.send({ message: 1 });
+  } catch (err) {
+    return res.status(500).send({ message: 2 });
+  }
+};
+
 
 exports.getBlogData = async (req, res) => {
   const { id } = req.query;

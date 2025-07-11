@@ -10,7 +10,9 @@ router.get("/getData", blogController.getData);
 
 router.get("/getBlogData",authenticateLogin,blogController.getBlogData);
 
-router.post("/postblog", authenticateLogin, blogController.postblog);
+// router.post("/postblog", authenticateLogin, blogController.postblog);
+router.post("/postblog", authenticateLogin, blogController.postblogWithRedis);
+
 
 router.post("/updateBlog",authenticateLogin,blogController.updateBlog);
 

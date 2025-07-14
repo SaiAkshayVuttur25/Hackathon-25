@@ -2,6 +2,22 @@
 const { Blog } = require("../models/blogModel");
 const redis = require('../redis/redisClient.js');
 
+// Get all approved blogs (cache for 60 seconds)
+exports.getBlogsWithRedis = async (req, res) => {
+  const cacheKey = 'approvedBlogs';
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return res.send({ message: 1, data: JSON.parse(cached) });
+  }
+  try {
+    const blogs = await Blog.find({ isApproved: true });
+    await redis.set(cacheKey, JSON.stringify(blogs), 'EX', 60);
+    res.send({ message: 1, data: blogs });
+  } catch (err) {
+    res.send({ message: 0 });
+  }
+};
+
 exports.getBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find({ isApproved: true });
@@ -140,7 +156,6 @@ exports.postblogWithRedis = async (req, res) => {
   }
 };
 
-
 exports.getBlogData = async (req, res) => {
   const { id } = req.query;
   try {
@@ -208,42 +223,6 @@ exports.delete = async (req, res) => {
   }
 };
 
-// exports.updateVote = async (req, res) => {
-//   const { eventId } = req.params;
-//   const { vote,increase } = req.body; 
-
-//   try {
-//     const event = await Blog.findById(eventId); // Find the event by ID
-
-//     if (!event) {
-//       return res.status(404).json({ message: "Event not found" });
-//     }
-
-//     // Update the vote count
-//     if(increase){
-//       if (vote === 'yes') {
-//         event.participants += 1;
-//       } else if (vote === 'no') {
-//         event.Notparticipants += 1;
-//       }
-//     }else{
-//       if (vote === 'yes') {
-//         event.participants -= 1;
-//       } else if (vote === 'no') {
-//         event.Notparticipants -= 1;
-//       }
-//     }
-
-//     await event.save(); // Save the updated event
-//     res.json(event); // Return the updated event data back to the frontend
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
-
-
-
-    // exports.postblog = async (req, res) => {
     //   const { title, blog, userId,eventDate,eventTime,eventEndDate,eventEndTime,location } = req.body;
     
     //   // Check if required fields are provided

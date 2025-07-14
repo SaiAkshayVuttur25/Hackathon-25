@@ -17,8 +17,10 @@ blogSchema = mongoose.Schema({
   nonParticipants: { type: Number, default: 0 },
 
 });
+blogSchema.index({isApproved:1});
 
-blogSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
+// blogSchema.index({_id:1});
+// blogSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 const Blog = mongoose.model("blog", blogSchema);
 module.exports = { Blog };

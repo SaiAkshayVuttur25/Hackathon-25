@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 // const { User } = require("../models/userModel");
 const User = require("../models/userModel");
-
+const redis = require('../redis/redisClient.js'); 
 const { Blog } = require("../models/blogModel");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
@@ -33,6 +33,45 @@ exports.getUserInfo = (req, res) => {
       isLoggedin: true,
       user: data,
     });
+  });
+};
+
+exports.getUserInfoWithRedis = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({
+      isLoggedin: false,
+      user: { isAdmin: false },
+      message: "No token provided",
+    });
+  }
+
+  // Try cache first
+  const cacheKey = `userInfo:${token}`;
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return res.status(200).json(JSON.parse(cached));
+  }
+
+  jwt.verify(token, secret, (err, data) => {
+    if (err) {
+      return res.status(401).json({
+        isLoggedin: false,
+        user: { isAdmin: false },
+        message: "Invalid token",
+      });
+    }
+
+    const result = {
+      isLoggedin: true,
+      user: data,
+    };
+
+    // Cache for 5 minutes
+    redis.set(cacheKey, JSON.stringify(result), 'EX', 300);
+
+    res.status(200).json(result);
   });
 };
 
@@ -148,6 +187,27 @@ exports.myblogs = (req, res) => {
       // console.log(err);
       res.send({ message: 0 });
     } else {
+      res.send({ data: blogs });
+    }
+  });
+};
+
+exports.myblogsWithRedis = async (req, res) => {
+  let userid = req.body.userid;
+  const cacheKey = `myblogs:${userid}`;
+
+  // Try cache first
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return res.send({ data: JSON.parse(cached) });
+  }
+
+  Blog.find({ userId: userid }, function (err, blogs) {
+    if (err) {
+      res.send({ message: 0 });
+    } else {
+      // Cache for 2 minutes
+      redis.set(cacheKey, JSON.stringify(blogs), 'EX', 120);
       res.send({ data: blogs });
     }
   });

@@ -144,6 +144,156 @@ exports.likeEvent = async (req, res) => {
   }
 };
 
+exports.likeEventWithRedis = async (req, res) => {
+  const { like } = req.body;
+  const userId = res.locals.user._id;
+  const { id: eventId } = req.params;
+
+  try {
+    if (!userId || !['yes', 'no', 'not_sure'].includes(like)) {
+      return res.status(400).json({ message: 'Invalid input parameters' });
+    }
+
+    const blog = await Blog.findById(eventId);
+    if (!blog) return res.status(404).json({ message: 'Event not found' });
+
+    const expireAt = new Date(`${blog.eventEndDate}T${blog.eventEndTime}:00+05:30`);
+
+    let interaction = await Event.findOne({ eventId, userId });
+
+    if (!interaction) {
+      interaction = new Event({
+        userId,
+        eventId,
+        liked: like,
+        reminded: false,
+        expireAt
+      });
+      await interaction.save();
+
+      if (like === 'yes') {
+        blog.participants = (blog.participants || 0) + 1;
+      } else if (like === 'no') {
+        blog.nonParticipants = (blog.nonParticipants || 0) + 1;
+      }
+      await blog.save();
+
+      // Update Redis cache
+      await redis.set(
+        `event:likeCounts:${eventId}`,
+        JSON.stringify({
+          participants: blog.participants,
+          nonParticipants: blog.nonParticipants
+        })
+      );
+
+      return res.status(200).json({
+        message: 'Like status set successfully',
+        liked: like,
+        reminded: false,
+        participants: blog.participants,
+        nonParticipants: blog.nonParticipants
+      });
+    }
+
+    if (interaction.liked === like) {
+      return res.status(200).json({ message: 'No change in like status' });
+    }
+
+    const previousLike = interaction.liked;
+
+    if (previousLike === 'yes') {
+      blog.participants = Math.max(0, (blog.participants || 0) - 1);
+    } else if (previousLike === 'no') {
+      blog.nonParticipants = Math.max(0, (blog.nonParticipants || 0) - 1);
+    }
+
+    if (like === 'yes') {
+      blog.participants = (blog.participants || 0) + 1;
+    } else if (like === 'no') {
+      blog.nonParticipants = (blog.nonParticipants || 0) + 1;
+    }
+
+    interaction.liked = like;
+    await interaction.save();
+    await blog.save();
+
+    // Update Redis cache
+    await redis.set(
+      `event:likeCounts:${eventId}`,
+      JSON.stringify({
+        participants: blog.participants,
+        nonParticipants: blog.nonParticipants
+      })
+    );
+
+    res.status(200).json({
+      message: 'Like status updated successfully',
+      liked: like,
+      reminded: interaction.reminded,
+      participants: blog.participants,
+      nonParticipants: blog.nonParticipants
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.remindEventWithRedis = async (req, res, next) => {
+  const { remind } = req.body;
+  const userId = res.locals.user._id;
+  const { id: eventId } = req.params;
+
+  try {
+    if (!userId || typeof remind !== 'boolean') {
+      return res.status(400).json({ message: 'Invalid input parameters' });
+    }
+
+    const blog = await Blog.findById(eventId);
+    if (!blog) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const expireAt = new Date(`${blog.eventEndDate}T${blog.eventEndTime}:00+05:30`);
+    const cacheKey = `event:remind:${eventId}:${userId}`;
+
+    let interaction = await Event.findOne({ eventId, userId });
+
+    if (!interaction) {
+      interaction = new Event({
+        userId,
+        eventId,
+        liked: null,
+        reminded: remind,
+        expireAt
+      });
+      await interaction.save();
+
+      // Cache the reminder status in Redis
+      await redis.set(cacheKey, JSON.stringify({ reminded: remind }));
+
+      return next();
+    }
+
+    if (interaction.reminded === remind) {
+      // Cache the reminder status in Redis
+      await redis.set(cacheKey, JSON.stringify({ reminded: remind }));
+
+      return res.status(200).json({ message: 'No change in reminder status' });
+    }
+
+    interaction.reminded = remind;
+    await interaction.save();
+
+    // Cache the updated reminder status in Redis
+    await redis.set(cacheKey, JSON.stringify({ reminded: remind }));
+
+    return next();
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 exports.remindEvent = async (req, res, next) => {
   const { remind } = req.body;
   const userId = res.locals.user._id;

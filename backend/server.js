@@ -1,12 +1,15 @@
-const mongoose = require("mongoose");
+
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
-dotenv.config();
-
+const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
+
+const app = express();
+dotenv.config();
+app.use(morgan("dev"));
 
 const userRoutes = require("./routes/userRoutes");
 const blogRoutes = require("./routes/blogRoutes");
@@ -56,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", userRoutes);
 app.use("/blog", blogRoutes);
 app.use("/admin", adminRoutes);
-app.use("/resource", resRoutes);
+// app.use("/resource", resRoutes);
 app.use("/event", eventRoutes);
 
 app.post("/contact", authenticateLogin, (req, res) => {

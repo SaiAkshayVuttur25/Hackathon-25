@@ -21,4 +21,8 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
+userSchema.index({ username: 1 }, { unique: true }); 
+userSchema.index({ isAdmin: 1 }); 
+
+
 module.exports = mongoose.model("User", userSchema);
